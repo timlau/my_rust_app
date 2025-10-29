@@ -1,0 +1,15 @@
+[package]
+name = "my_first_app"
+version = "0.1.0"
+authors = ["Tim Lauridsen <tla@rasmil.dk>"]
+edition = "2021"
+publish = false
+
+[profile.release]
+lto = true
+
+[dependencies]
+gettext-rs = { version = "0.7", features = ["gettext-system"] }
+relm4 = { version = "0.9.1", features = ["libadwaita", "gnome_47"] }
+tracing = "0.1.41"
+tracing-subscriber = "0.3"
