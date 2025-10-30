@@ -1,6 +1,6 @@
-data/dk.rasmil.MyFirstApp.desktop.in.in
-data/dk.rasmil.MyFirstApp.gschema.xml.in
-data/dk.rasmil.MyFirstApp.metainfo.xml.in.in
+data/org.mydomain.MyRustApp.desktop.in.in
+data/org.mydomain.MyRustApp.gschema.xml.in
+data/org.mydomain.MyRustApp.metainfo.xml.in.in
 data/resources/ui/shortcuts.ui
 src/app.rs
 src/main.rs

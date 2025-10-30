@@ -1,15 +1,14 @@
 project(
-  'my_first_app',
+  'my_rust_app',
   'rust',
   version: '0.1.0',
   meson_version: '>= 0.59',
   # license: 'MIT',
 )
-
 i18n = import('i18n')
 gnome = import('gnome')
 
-base_id = 'dk.rasmil.MyFirstApp'
+base_id = 'org.mydomain.MyRustApp'
 
 dependency('glib-2.0', version: '>= 2.66')
 dependency('gio-2.0', version: '>= 2.66')
@@ -50,8 +49,10 @@ endif
 
 meson.add_dist_script(
   'build-aux/dist-vendor.sh',
-  meson.project_build_root() / 'meson-dist' / meson.project_name() + '-' + version,
-  meson.project_source_root()
+  meson.project_build_root() / 'meson-dist' / meson.project_name()
+  + '-'
+  + version,
+  meson.project_source_root(),
 )
 
 if get_option('profile') == 'development'

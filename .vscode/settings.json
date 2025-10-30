@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        ".flatpak-builder/": true,
+        "builddir/": true,
+        "flatpak_app/": true,
+        "target/": true
+    },
+    "C_Cpp.default.compileCommands": "/home/tim/udv/github/my_rust_app/builddir/compile_commands.json",
+    "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild"
+}

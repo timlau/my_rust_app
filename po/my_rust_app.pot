@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the my_rust_app package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: my_rust_app main\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-30 08:03+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Insert your license of choice here
+#. <project_license>MIT</project_license>
+#: data/org.mydomain.MyRustApp.desktop.in.in:2
+#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:8 src/main.rs:34
+msgid "My First App"
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.desktop.in.in:3
+#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:9
+msgid "Write a GTK + Rust application"
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.desktop.in.in:9
+msgid "Gnome;GTK;"
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.gschema.xml.in:6
+msgid "Window width"
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.gschema.xml.in:10
+msgid "Window height"
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:11
+msgid ""
+"A boilerplate template for GTK + Rust. It uses Meson as a build system and "
+"has flatpak support by default."
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:16
+msgid "Main window"
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: data/resources/ui/shortcuts.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""

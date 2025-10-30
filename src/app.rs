@@ -3,12 +3,10 @@ use relm4::{
     adw, gtk, main_application, Component, ComponentParts, ComponentSender, SimpleComponent,
 };
 
-use gtk::prelude::{
-    ApplicationExt, ApplicationWindowExt, GtkWindowExt, OrientableExt, SettingsExt, WidgetExt,
-};
-use gtk::{gio, glib};
+use gtk::glib;
+use gtk::prelude::{ApplicationExt, ApplicationWindowExt, GtkWindowExt, OrientableExt, WidgetExt};
 
-use crate::config::{APP_ID, PROFILE};
+use crate::config::PROFILE;
 use crate::modals::about::AboutDialog;
 
 pub(super) struct App {}
@@ -43,6 +41,10 @@ impl SimpleComponent for App {
     view! {
         main_window = adw::ApplicationWindow::new(&main_application()) {
             set_visible: true,
+            set_default_height: 500,
+            set_default_width: 600,
+
+
 
             connect_close_request[sender] => move |_| {
                 sender.input(AppMsg::Quit);
@@ -51,7 +53,7 @@ impl SimpleComponent for App {
 
             #[wrap(Some)]
             set_help_overlay: shortcuts = &gtk::Builder::from_resource(
-                    "/dk/rasmil/MyFirstApp/gtk/help-overlay.ui"
+                    "/org/mydomain/MyRustApp/gtk/help-overlay.ui"
                 )
                 .object::<gtk::ShortcutsWindow>("help_overlay")
                 .unwrap() -> gtk::ShortcutsWindow {
@@ -76,7 +78,7 @@ impl SimpleComponent for App {
                 },
 
                 gtk::Label {
-                    set_label: "Hello world!",
+                    set_label: "My Rust Application",
                     add_css_class: "title-header",
                     set_vexpand: true,
                 }
@@ -131,28 +133,29 @@ impl SimpleComponent for App {
 
 impl AppWidgets {
     fn save_window_size(&self) -> Result<(), glib::BoolError> {
-        let settings = gio::Settings::new(APP_ID);
-        let (width, height) = self.main_window.default_size();
+        // let settings = gio::Settings::with_path(APP_ID, SETTINGS_FILE);
+        // let (width, height) = self.main_window.default_size();
 
-        settings.set_int("window-width", width)?;
-        settings.set_int("window-height", height)?;
+        // settings.set_int("window-width", width)?;
+        // settings.set_int("window-height", height)?;
 
-        settings.set_boolean("is-maximized", self.main_window.is_maximized())?;
+        // settings.set_boolean("is-maximized", self.main_window.is_maximized())?;
 
         Ok(())
     }
 
     fn load_window_size(&self) {
-        let settings = gio::Settings::new(APP_ID);
+        // let settings = gio::Settings::new(APP_ID);
+        // let settings = gio::Settings::with_path(APP_ID, SETTINGS_FILE);
 
-        let width = settings.int("window-width");
-        let height = settings.int("window-height");
-        let is_maximized = settings.boolean("is-maximized");
+        // let width = settings.int("window-width");
+        // let height = settings.int("window-height");
+        // let is_maximized = settings.boolean("is-maximized");
 
-        self.main_window.set_default_size(width, height);
+        // self.main_window.set_default_size(width, height);
 
-        if is_maximized {
-            self.main_window.maximize();
-        }
+        // if is_maximized {
+        //     self.main_window.maximize();
+        // }
     }
 }

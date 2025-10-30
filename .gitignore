@@ -9,5 +9,4 @@
 *.ui~
 /.flatpak/
 /vendor
-/.vscode
 .flatpak-builder/

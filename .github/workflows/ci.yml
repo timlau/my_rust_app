@@ -32,7 +32,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v6
       with:
-        bundle: my_first_app.flatpak
-        manifest-path: build-aux/dk.rasmil.MyFirstApp.Devel.json
+        bundle: my_rust_app.flatpak
+        manifest-path: build-aux/org.mydomain.MyRustApp.Devel.json
         run-tests: true
         cache-key: flatpak-builder-${{ github.sha }}
