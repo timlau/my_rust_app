@@ -26,7 +26,7 @@ A boilerplate template to get started with GTK, Rust, Meson, Flatpak made for GN
 - i18n support
 
 
-## Building the project
+## Building the project (flatpak)
 
 Make sure you have `flatpak` and `flatpak-builder` installed. Then run the commands below. Replace `<application_id>` with the value you entered during project creation. Please note that these commands are just for demonstration purposes. Normally this would be handled by your IDE, such as GNOME Builder or VS Code with the Flatpak extension.
 
@@ -35,12 +35,21 @@ flatpak install --user org.gnome.Sdk//46 org.gnome.Platform//46  org.freedesktop
 flatpak-builder --user flatpak_app build-aux/org.mydomain.MyRustApp.Devel.json
 ```
 
-## Running the project
+## Running the project (flatpak)
 
 Once the project is build, run the command below. Replace `<application_id>` and `<project_name>` with the values you entered during project creation. Please note that these commands are just for demonstration purposes. Normally this would be handled by your IDE, such as GNOME Builder or VS Code with the Flatpak extension.
 
 ```shell
 flatpak-builder --run flatpak_app build-aux/org.mydomain.MyRustApp.Devel.json my_rust_app
+```
+
+
+## Building and running locally from checkout
+
+Run the local.sh script to build and run application locally.
+
+```shell
+./local.sh
 ```
 
 ## Translations with Gettext
@@ -60,8 +69,8 @@ Note that you might need to update the `po/POTFILES.in` file to reflect the file
 
 ### Translating the translatable strings
 
-To translate the strings you need to use po files. Tools like Poedit allow you to generate these from the `po/<project_name>.pot` file.
-It also allows you to sync the `po/<project_name>.pot` when you rerun `xgettext`.
+To translate the strings you need to use po files. Tools like Poedit allow you to generate these from the `po/my_rust_app.pot` file.
+It also allows you to sync the `po/my_rust_app.pot` when you rerun `xgettext`.
 
 When adding a po file also make sure to add the language code to `po/LINGUAS`.
 

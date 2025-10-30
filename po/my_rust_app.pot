@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: my_rust_app main\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 08:03+0100\n"
+"POT-Creation-Date: 2025-10-30 14:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Insert your license of choice here
-#. <project_license>MIT</project_license>
 #: data/org.mydomain.MyRustApp.desktop.in.in:2
-#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:8 src/main.rs:34
 msgid "My First App"
 msgstr ""
 
 #: data/org.mydomain.MyRustApp.desktop.in.in:3
-#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:9
 msgid "Write a GTK + Rust application"
 msgstr ""
 
@@ -45,10 +41,20 @@ msgstr ""
 msgid "Window maximized state"
 msgstr ""
 
+#. Insert your license of choice here
+#. <project_license>MIT</project_license>
+#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:8 src/main.rs:34
+msgid "My Rust App"
+msgstr ""
+
+#: data/org.mydomain.MyRustApp.metainfo.xml.in.in:9
+msgid "A Simple Rust Gui Application using Gtk4, Libadwaita, Relm4"
+msgstr ""
+
 #: data/org.mydomain.MyRustApp.metainfo.xml.in.in:11
 msgid ""
-"A boilerplate template for GTK + Rust. It uses Meson as a build system and "
-"has flatpak support by default."
+"A boilerplate template for GTK4 + Rust + Relm4 . It uses Meson as a build "
+"system and has flatpak support by default."
 msgstr ""
 
 #: data/org.mydomain.MyRustApp.metainfo.xml.in.in:16
