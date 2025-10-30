@@ -17,16 +17,16 @@ impl SimpleComponent for AboutDialog {
         adw::AboutDialog::builder()
             .application_icon(APP_ID)
             // Insert your license of choice here
-            // .license_type(gtk::License::MitX11)
+            .license_type(gtk::License::MitX11)
             // Insert your website here
-            // .website("https://gitlab.gnome.org/bilelmoussaoui/my_rust_app/")
+            .website("https://github.com/timlau/my_rust_app")
             // Insert your Issues page
-            // .issue_url("https://gitlab.gnome.org/World/Rust/my_rust_app/-/issues")
+            .issue_url("https://github.com/timlau/my_rust_app/issues")
             // Insert your application name here
             .application_name("Relm4-template")
             .version(VERSION)
             .translator_credits("translator-credits")
-            .copyright("© 2024 Tim Lauridsen")
+            .copyright("© 2025 Tim Lauridsen")
             .developers(vec!["Tim Lauridsen"])
             .designers(vec!["Tim Lauridsen"])
             .build()
