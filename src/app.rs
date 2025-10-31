@@ -33,7 +33,7 @@ impl SimpleComponent for App {
             section! {
                 "_Preferences" => PreferencesAction,
                 "_Keyboard" => ShortcutsAction,
-                "_About My First App" => AboutAction,
+                "_About My Rust App" => AboutAction,
             }
         }
     }
