@@ -7,6 +7,6 @@
     },
     "files.associations": {
         "*.xml.in.in": "xml",
-        "*.xml.in": "xml"
+        "*.xml.in": "xml",
     },
 }

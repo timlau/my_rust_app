@@ -2,7 +2,7 @@ use adw::prelude::AdwDialogExt;
 use gtk::prelude::GtkApplicationExt;
 use relm4::{adw, gtk, ComponentParts, ComponentSender, SimpleComponent};
 
-use crate::config::{APP_ID, VERSION};
+use crate::config::{APP_ID, APP_NAME, DEVELOPER_NAME, GITHUB_ID, VERSION};
 
 pub struct AboutDialog {}
 
@@ -19,16 +19,16 @@ impl SimpleComponent for AboutDialog {
             // Insert your license of choice here
             .license_type(gtk::License::MitX11)
             // Insert your website here
-            .website("https://github.com/timlau/my_rust_app")
+            .website(format!("https://github.com/{GITHUB_ID}/{APP_NAME}"))
             // Insert your Issues page
-            .issue_url("https://github.com/timlau/my_rust_app/issues")
+            .issue_url(format!("https://github.com/{GITHUB_ID}/{APP_NAME}/issues"))
             // Insert your application name here
-            .application_name("Relm4-template")
+            .application_name("My Rust Application")
             .version(VERSION)
             .translator_credits("translator-credits")
-            .copyright("© 2025 Tim Lauridsen")
-            .developers(vec!["Tim Lauridsen"])
-            .designers(vec!["Tim Lauridsen"])
+            .copyright(format!("© 2025 {DEVELOPER_NAME}"))
+            .developers(vec![DEVELOPER_NAME])
+            .designers(vec![DEVELOPER_NAME])
             .build()
     }
 

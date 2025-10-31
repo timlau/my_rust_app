@@ -3,12 +3,16 @@ project(
   'rust',
   version: '0.1.0',
   meson_version: '>= 0.59',
-  # license: 'MIT',
+  license: 'MIT',
 )
 i18n = import('i18n')
 gnome = import('gnome')
 
 base_id = 'org.mydomain.MyRustApp'
+
+# constants from config.rs used in About dialog
+app_developer = 'Tim Lauridsen'
+app_github_id = 'timlau'
 
 dependency('glib-2.0', version: '>= 2.66')
 dependency('gio-2.0', version: '>= 2.66')
