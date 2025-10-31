@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import argparse
 import shutil
+import shlex
+import subprocess
 from pathlib import Path
 
 
@@ -31,14 +33,18 @@ class ProjectCreator:
         self.name = args.name
         self.id = args.id
         self.obj_path = "/" + "/".join(self.id.split("."))
-        print(f"ID paths: {self.obj_path}")
         self.root = Path(args.root).expanduser().resolve()
         self.project_path = self.root / self.name
         self.source_path = Path(__file__).parent
 
+    def cleanup_unwanted(self):
+        self.project_path.joinpath("src", "config.rs").unlink(missing_ok=True)
+        self.project_path.joinpath("po", f"{self.source_name}.pot").unlink(missing_ok=True)
+
+
     def copy_directories(self):
         for dir_name in self.dirs:
-            print(f"Copying {dir_name}...")
+            print(f" --> Copying directory {dir_name}...")
             shutil.copytree(
                 self.source_path / dir_name,
                 self.project_path / dir_name,
@@ -47,14 +53,14 @@ class ProjectCreator:
 
     def copy_files(self):
         for file_name in self.files:
-            print(f"Copying {file_name}...")
+            print(f" --> Copying {file_name}...")
             shutil.copy2(self.source_path / file_name, self.project_path / file_name)
 
     def rename_ids(self):
         for dir in self.dirs:
             dir_path = self.project_path / dir
             for file_path in dir_path.glob(f"**/{self.source_id}*"):
-                print(f"Renaming file {file_path}...")
+                print(f" --> Renaming file {file_path}...")
                 new_file_path = file_path.with_name(
                     file_path.name.replace(self.source_id, self.id)
                 )
@@ -82,18 +88,28 @@ class ProjectCreator:
                 content = content.replace(self.source_name, self.name)
                 content = content.replace(self.source_obj_path, self.obj_path)
                 if content != current_content:
-                    print(f"Updating content in {file_name}...")
+                    print(f" --> Updating content in {file_name}...")
                     with open(file_name, "w") as f:
                         f.write(content)
+
+    def post_actions(self):
+        print(" --> Generating translation template...")
+        subprocess.run(shlex.split(f"xgettext --package-name={self.name} --package-version=main --files-from=po/POTFILES.in --output=po/{self.name}.pot"), cwd=self.project_path)
+        print(" --> Initializing git repository...")
+        subprocess.run(shlex.split(f"git init -q"), cwd=self.project_path)
+        subprocess.run(shlex.split(f"git add *"), cwd=self.project_path)
+        subprocess.run(shlex.split(f"git commit -m 'Initial import' -q"), cwd=self.project_path)
 
     def create_project(self):
         self.project_path.mkdir(parents=True, exist_ok=True)
         print(f"Creating project at: {self.project_path}")
         self.copy_directories()
+        self.cleanup_unwanted()
         self.copy_files()
         self.rename_ids()
         self.patch_files()
-        print(f"Project '{self.name}' created with ID '{self.id}'.")
+        self.post_actions()
+        print(f"Project '{self.name}' created with ID '{self.id}'. in {self.project_path}")
 
 
 def main():
