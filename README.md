@@ -25,6 +25,26 @@ A boilerplate template to get started with GTK, Rust, Meson, Flatpak made for GN
 - Gsettings to store the window state, more settings could be added
 - i18n support
 
+## Creating a new custom project
+
+`new_project.py` is a tool to create a new project with a custum name and id in at new location.
+
+- All specific files will be renamed and modified to reflect the new name and id etc.
+- The new project will be checked into a new git clean project
+- A new translation template (.pot) will be created.
+
+### Example
+
+```shell
+./new_project.py my_project dk.rasmil.MyApp ~/udv/test/
+```
+
+This will create a new project named `my_project`, with the id `dk.rasmil.MyApp` in the `udv/test/my_project` folder
+
+### Requirements (new_project.py)
+
+- Python 3.1x
+- xgettext
 
 ## Building the project (flatpak)
 
