@@ -14,6 +14,7 @@ class ProjectCreator:
         "build-aux",
         "po",
         ".vscode",
+
     ]
     files = [
         ".gitignore",
@@ -44,7 +45,7 @@ class ProjectCreator:
 
     def copy_directories(self):
         for dir_name in self.dirs:
-            print(f" --> Copying directory {dir_name}...")
+            print(f" --> Copying directory : {dir_name}")
             shutil.copytree(
                 self.source_path / dir_name,
                 self.project_path / dir_name,
@@ -53,14 +54,14 @@ class ProjectCreator:
 
     def copy_files(self):
         for file_name in self.files:
-            print(f" --> Copying {file_name}...")
+            print(f" --> Copying file : {file_name}")
             shutil.copy2(self.source_path / file_name, self.project_path / file_name)
 
     def rename_ids(self):
         for dir in self.dirs:
             dir_path = self.project_path / dir
             for file_path in dir_path.glob(f"**/{self.source_id}*"):
-                print(f" --> Renaming file {file_path}...")
+                print(f" --> Renaming file : {file_path}...")
                 new_file_path = file_path.with_name(
                     file_path.name.replace(self.source_id, self.id)
                 )
@@ -68,18 +69,19 @@ class ProjectCreator:
 
     def patch_files(self):
         patch_extensions = [
-            "rs",
-            "toml",
-            "md",
-            "sh",
-            "json",
-            "desktop",
-            "in",
-            "build",
-            "xml",
+            ".rs",
+            ".toml",
+            ".md",
+            ".sh",
+            ".json",
+            ".desktop",
+            ".in",
+            ".build",
+            ".xml",
+            ".yml"
         ]
-        for file_name in self.project_path.glob("**/*"):
-            if file_name.is_file() and file_name.suffix.lstrip(".") in patch_extensions:
+        for file_name in self.project_path.rglob("*"):
+            if file_name.is_file() and file_name.suffix in patch_extensions:
                 # print(f"Patching file {file_name}...")
                 with open(file_name, "r") as f:
                     content = f.read()
