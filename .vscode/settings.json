@@ -5,4 +5,8 @@
         "flatpak_app/": true,
         "target/": true
     },
+    "files.associations": {
+        "*.xml.in.in": "xml",
+        "*.xml.in": "xml"
+    },
 }
