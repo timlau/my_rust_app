@@ -4,10 +4,7 @@
 
 A boilerplate template to get started with GTK, Rust, Meson, Flatpak made for GNOME. It can be adapted for other desktop environments like elementary.
 
-<div align="center">
-
 ![Main window](data/resources/screenshots/screenshot1.png "Main window")
-</div>
 
 ## What does it contains?
 
@@ -63,7 +60,6 @@ Once the project is build, run the command below. Replace `<application_id>` and
 flatpak-builder --run flatpak_app build-aux/org.mydomain.MyRustApp.Devel.json my_rust_app
 ```
 
-
 ## Building and running locally from checkout
 
 Run the local.sh script to build and run application locally.
@@ -93,4 +89,3 @@ To translate the strings you need to use po files. Tools like Poedit allow you t
 It also allows you to sync the `po/my_rust_app.pot` when you rerun `xgettext`.
 
 When adding a po file also make sure to add the language code to `po/LINGUAS`.
-
