@@ -11,3 +11,5 @@
 /vendor
 .flatpak-builder/
 *.tar.gz
+rpmbuild/
+.cargo/
