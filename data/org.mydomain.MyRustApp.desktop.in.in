@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=My First App
+Name=My Rust App
 Comment=Write a GTK + Rust application
 Type=Application
 Exec=my_rust_app
