@@ -9,257 +9,61 @@ Version:        0.1.0
 Release:        %autorelease
 Summary:        A boilerplate template application get started with GTK, Rust, Meson, Flatpak made for GNOME
 
-License:        MIT
+License:        MIT 
 
 URL:            https://github.com/timlau/my_rust_app
-Source:         # FIXME
+Source:         %{name}-%{version}.tar.xz
 
 BuildRequires:  cargo-rpm-macros >= 26
+BuildRequires:  meson
+BuildRequires: desktop-file-utils
+BuildRequires: libappstream-glib
 
 %global _description %{expand:
 %{summary}.}
 
 %description %{_description}
 
-%prep
-%autosetup -n my_rust_app-%{version} -p1
-%cargo_prep
-
 %generate_buildrequires
 %cargo_generate_buildrequires
 
+%prep
+%autosetup -n %{name}-%{version} -p1
+%cargo_prep
+
+%check
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
+desktop-file-validate %{buildroot}/%{_datadir}/applications/*.desktop
+
+%conf
+%meson
+
 %build
-%cargo_build
-%{cargo_license_summary}
-%{cargo_license} > LICENSE.dependencies
+%meson_build
 
 %install
-%cargo_install
+%meson_install
 
-%if %{with check}
-%check
-%cargo_test
-%endif
+%post
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+glib-compile-schemas /usr/share/glib-2.0/schemas/ &>/dev/null || :
+
+%postun
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+fi
 
 %files
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.4/COPYING
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.4/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.4/UNLICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.5.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.5.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cairo-rs-0.20.12/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cairo-rs-0.20.12/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cairo-rs-0.21.2/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cairo-rs-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cairo-sys-rs-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cairo-sys-rs-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.43/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.43/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-expr-0.20.3/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-expr-0.20.3/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.4/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.4/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/equivalent-1.0.2/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/equivalent-1.0.2/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/field-offset-0.3.6/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/field-offset-0.3.6/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.4/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.4/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/fragile-2.0.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.31/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.31/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk-pixbuf-0.20.10/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk-pixbuf-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk-pixbuf-0.21.2/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk-pixbuf-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk-pixbuf-sys-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk-pixbuf-sys-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk4-0.10.1/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk4-0.10.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk4-0.9.6/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk4-0.9.6/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk4-sys-0.10.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gdk4-sys-0.9.6/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.2.16/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.2.16/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gettext-rs-0.7.7/LICENSE.txt
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gettext-sys-0.26.0/LICENSE.txt
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gio-0.20.12/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gio-0.20.12/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gio-0.21.2/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gio-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gio-sys-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gio-sys-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-0.20.12/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-0.20.12/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-0.21.3/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-0.21.3/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-macros-0.20.12/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-macros-0.20.12/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-macros-0.21.2/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-macros-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-sys-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/glib-sys-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gobject-sys-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gobject-sys-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/graphene-rs-0.20.10/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/graphene-rs-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/graphene-rs-0.21.2/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/graphene-rs-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/graphene-sys-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/graphene-sys-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gsk4-0.10.1/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gsk4-0.10.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gsk4-0.9.6/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gsk4-0.9.6/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gsk4-sys-0.10.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gsk4-sys-0.9.6/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-0.10.1/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-0.10.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-0.9.7/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-0.9.7/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-macros-0.10.1/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-macros-0.10.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-macros-0.9.5/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-macros-0.9.5/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-sys-0.10.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/gtk4-sys-0.9.6/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.16.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.16.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.5.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.5.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/indexmap-2.12.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/indexmap-2.12.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/lazy_static-1.5.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/lazy_static-1.5.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/libadwaita-0.7.2/LICENCE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/libadwaita-0.8.0/LICENCE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/libadwaita-sys-0.7.2/LICENCE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/libadwaita-sys-0.8.0/LICENCE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.177/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.177/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/locale_config-0.3.0/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.28/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.28/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.6/COPYING
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.6/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.6/UNLICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.9.1/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/nanorand-0.7.0/LICENSE.md
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/nu-ansi-term-0.50.3/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pango-0.20.12/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pango-0.20.12/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pango-0.21.3/COPYRIGHT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pango-0.21.3/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pango-sys-0.20.10/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pango-sys-0.21.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.16/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.16/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro-crate-3.4.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro-crate-3.4.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.12.2/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.12.2/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.13/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.13/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.8/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.8/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.8/src/unicode_tables/LICENSE-UNICODE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-0.10.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-0.10.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-0.9.1/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-0.9.1/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-css-0.10.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-css-0.10.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-macros-0.10.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-macros-0.10.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-macros-0.9.1/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/relm4-macros-0.9.1/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/rustc_version-0.4.1/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/rustc_version-0.4.1/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/semver-1.0.27/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/semver-1.0.27/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/serde_spanned-1.0.3/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/serde_spanned-1.0.3/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/sharded-slab-0.1.7/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.11/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.15.1/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.15.1/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/spin-0.9.8/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.108/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.108/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/system-deps-7.0.6/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/system-deps-7.0.6/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/target-lexicon-0.13.2/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/temp-dir-0.1.16/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.48.0/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml-0.9.8/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml-0.9.8/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-0.7.3/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-0.7.3/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_edit-0.23.7/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_edit-0.23.7/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_parser-1.0.4/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_parser-1.0.4/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_writer-1.0.4/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/toml_writer-1.0.4/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-0.1.41/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-attributes-0.1.30/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-core-0.1.34/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-core-0.1.34/src/spin/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-log-0.2.0/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-subscriber-0.3.20/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.20/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.20/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.20/LICENSE-UNICODE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.22/LICENSE-APACHE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.22/LICENSE-MIT
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.22/LICENSE-UNICODE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/version-compare-0.2.0/LICENSE
-%license builddir/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/winnow-0.7.13/LICENSE-MIT
-%license LICENSE.dependencies
+%license LICENSE
 %doc README.md
 %doc meson_options.txt
-%doc LICENCE
+%{_datadir}/%{name}/
+%{_datadir}/applications/*.desktop
+%{_datadir}/icons/hicolor/symbolic/apps/*.svg
+%{_datadir}/icons/hicolor/scalable/apps/*.svg
+%{_metainfodir}/*.metainfo.xml
+%{_datadir}/glib-2.0/schemas/*.gschema.xml
 %{_bindir}/my_rust_app
 
 %changelog

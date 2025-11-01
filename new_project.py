@@ -14,7 +14,6 @@ class ProjectCreator:
         "build-aux",
         "po",
         ".vscode",
-
     ]
     files = [
         ".gitignore",
@@ -40,8 +39,9 @@ class ProjectCreator:
 
     def cleanup_unwanted(self):
         self.project_path.joinpath("src", "config.rs").unlink(missing_ok=True)
-        self.project_path.joinpath("po", f"{self.source_name}.pot").unlink(missing_ok=True)
-
+        self.project_path.joinpath("po", f"{self.source_name}.pot").unlink(
+            missing_ok=True
+        )
 
     def copy_directories(self):
         for dir_name in self.dirs:
@@ -78,7 +78,8 @@ class ProjectCreator:
             ".in",
             ".build",
             ".xml",
-            ".yml"
+            ".yml",
+            ".spec",
         ]
         for file_name in self.project_path.rglob("*"):
             if file_name.is_file() and file_name.suffix in patch_extensions:
@@ -96,11 +97,18 @@ class ProjectCreator:
 
     def post_actions(self):
         print(" --> Generating translation template...")
-        subprocess.run(shlex.split(f"xgettext --package-name={self.name} --package-version=main --files-from=po/POTFILES.in --output=po/{self.name}.pot"), cwd=self.project_path)
+        subprocess.run(
+            shlex.split(
+                f"xgettext --package-name={self.name} --package-version=main --files-from=po/POTFILES.in --output=po/{self.name}.pot"
+            ),
+            cwd=self.project_path,
+        )
         print(" --> Initializing git repository...")
-        subprocess.run(shlex.split(f"git init -q"), cwd=self.project_path)
-        subprocess.run(shlex.split(f"git add *"), cwd=self.project_path)
-        subprocess.run(shlex.split(f"git commit -m 'Initial import' -q"), cwd=self.project_path)
+        subprocess.run(shlex.split("git init -q"), cwd=self.project_path)
+        subprocess.run(shlex.split("git add *"), cwd=self.project_path)
+        subprocess.run(
+            shlex.split("git commit -m 'Initial import' -q"), cwd=self.project_path
+        )
 
     def create_project(self):
         self.project_path.mkdir(parents=True, exist_ok=True)
@@ -111,7 +119,9 @@ class ProjectCreator:
         self.rename_ids()
         self.patch_files()
         self.post_actions()
-        print(f"Project '{self.name}' created with ID '{self.id}'. in {self.project_path}")
+        print(
+            f"Project '{self.name}' created with ID '{self.id}'. in {self.project_path}"
+        )
 
 
 def main():
