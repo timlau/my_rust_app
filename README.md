@@ -1,6 +1,6 @@
 # GTK + Rust + Relm4 + Meson + Flatpak = <3
 
-> This is a fork of [gtk-rust-template](https://github.com/Relm4/relm4-template) 
+> This is a fork of [gtk-rust-template](https://github.com/Relm4/relm4-template)
 
 It is improved in may ways to make it easier to make an new project based on this boilerplate project.
 
@@ -47,19 +47,17 @@ This will create a new project named `my_project`, with the id `dk.rasmil.MyApp`
 
 ## Building the project (flatpak)
 
-Make sure you have `flatpak` and `flatpak-builder` installed. Then run the commands below. Replace `<application_id>` with the value you entered during project creation. Please note that these commands are just for demonstration purposes. Normally this would be handled by your IDE, such as GNOME Builder or VS Code with the Flatpak extension.
+Make sure you have `make`,  `flatpak` and `flatpak-builder` installed.
 
 ```shell
-flatpak install --user org.gnome.Sdk//46 org.gnome.Platform//46  org.freedesktop.Sdk.Extension.rust-stable//24.08 org.freedesktop.Sdk.Extension.llvm16//24.08
-flatpak-builder --user flatpak_app build-aux/org.mydomain.MyRustApp.Devel.json
+make flatpak-deps
+make flatpak
 ```
 
 ## Running the project (flatpak)
 
-Once the project is build, run the command below. Replace `<application_id>` and `<project_name>` with the values you entered during project creation. Please note that these commands are just for demonstration purposes. Normally this would be handled by your IDE, such as GNOME Builder or VS Code with the Flatpak extension.
-
 ```shell
-flatpak-builder --run flatpak_app build-aux/org.mydomain.MyRustApp.Devel.json my_rust_app
+make flatpak-run
 ```
 
 ## Building and running locally from checkout
@@ -93,6 +91,7 @@ It also allows you to sync the `po/my_rust_app.pot` when you rerun `xgettext`.
 When adding a po file also make sure to add the language code to `po/LINGUAS`.
 
 ## More information
+
 - [Rust](https://rust-lang.org)
 - [Relm4](https://relm4.org)
 - [Gtk](https://www.gtk.org)

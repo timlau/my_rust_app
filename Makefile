@@ -36,6 +36,16 @@ rpm:
 	@-rpmbuild $(RPMBUILD_OPTS) -ba ${APPNAME}.spec
 
 
+flatpak:
+	@echo "Building Flatpak.."
+	flatpak-builder --user flatpak_app build-aux/org.mydomain.MyRustApp.Devel.json --force-clean
+
+flatpak-deps:
+	flatpak install --user org.gnome.Sdk//48 org.gnome.Platform//48  org.freedesktop.Sdk.Extension.rust-stable//24.08 org.freedesktop.Sdk.Extension.llvm18//24.08
+
+flatpak-run:
+	flatpak-builder --run flatpak_app build-aux/org.mydomain.MyRustApp.Devel.json my_rust_app
+
 update-pot:
 	@echo "Updating .pot file.."
 	@xgettext --package-APPNAME=${APPNAME} --package-version=main --files-from=po/POTFILES.in --output=po/${APPNAME}.pot
