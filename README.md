@@ -1,8 +1,8 @@
 # GTK + Rust + Relm4 + Meson + Flatpak = <3
 
-> This is a fork of [gtk-rust-template](https://gitlab.gnome.org/World/Rust/gtk-rust-template) that adapts the code for Relm4 while trying to change as little as possible.
+> This is a fork of [gtk-rust-template](https://github.com/Relm4/relm4-template) 
 
-A boilerplate template to get started with GTK, Rust, Meson, Flatpak made for GNOME. It can be adapted for other desktop environments like elementary.
+It is improved in may ways to make it easier to make an new project based on this boilerplate project.
 
 ![Main window](data/resources/screenshots/screenshot1.png "Main window")
 
@@ -21,6 +21,8 @@ A boilerplate template to get started with GTK, Rust, Meson, Flatpak made for GN
 - Tests to validate your Metainfo, Schemas & Desktop files
 - Gsettings to store the window state, more settings could be added
 - i18n support
+- .spec file for building rpm for Fedora Linux
+- New_project.py script to easy create a new project with new name and id.
 
 ## Creating a new custom project
 
@@ -89,3 +91,9 @@ To translate the strings you need to use po files. Tools like Poedit allow you t
 It also allows you to sync the `po/my_rust_app.pot` when you rerun `xgettext`.
 
 When adding a po file also make sure to add the language code to `po/LINGUAS`.
+
+## More information
+- [Rust](https://rust-lang.org)
+- [Relm4](https://relm4.org)
+- [Gtk](https://www.gtk.org)
+- [Adwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
