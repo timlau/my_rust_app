@@ -51,7 +51,7 @@ BuildRequires:  libappstream-glib
 %check
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 desktop-file-validate %{buildroot}/%{_datadir}/applications/*.desktop
-# %cargo_test # No tests in app
+# no cargo_test, there is no tests defined in this project
 
 %conf
 %meson
