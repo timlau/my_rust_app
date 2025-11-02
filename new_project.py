@@ -7,14 +7,16 @@ from pathlib import Path
 
 
 class ProjectCreator:
+    # Source directories to copy
     source_dirs = [
-        "src",
-        "data",
+        ".vscode",
         ".github",
         "build-aux",
+        "data",
         "po",
-        ".vscode",
+        "src",
     ]
+    # Source files to copy
     source_files = [
         ".gitignore",
         ".editorconfig",
@@ -28,6 +30,7 @@ class ProjectCreator:
         "my_rust_app.spec",
         "LICENSE",
     ]
+    # Source identifiers to replace in file names and contents
     source_id = "org.mydomain.MyRustApp"
     source_name = "my_rust_app"
     source_obj_path = "/org/mydomain/MyRustApp"
@@ -41,12 +44,14 @@ class ProjectCreator:
         self.source_path = Path(__file__).parent
 
     def cleanup_unwanted(self):
+        """Remove unwanted files from the copied project."""
         self.project_path.joinpath("src", "config.rs").unlink(missing_ok=True)
         self.project_path.joinpath("po", f"{self.source_name}.pot").unlink(
             missing_ok=True
         )
 
     def copy_directories(self):
+        """Copy source directories to the new project path."""
         for dir_name in self.source_dirs:
             print(f" --> Copying directory : {dir_name}")
             shutil.copytree(
@@ -56,11 +61,13 @@ class ProjectCreator:
             )
 
     def copy_files(self):
+        """Copy source files to the new project path."""
         for file_name in self.source_files:
             print(f" --> Copying file : {file_name}")
             shutil.copy2(self.source_path / file_name, self.project_path / file_name)
 
     def rename_files(self, key, new_key):
+        """Rename files containing the key in their names."""
         dir_path = self.project_path
         for file_path in dir_path.glob(f"**/*{key}*"):
             print(f" --> Renaming file : {file_path}...")
@@ -68,6 +75,7 @@ class ProjectCreator:
             file_path.rename(new_file_path)
 
     def patch_files(self):
+        """Patch files to replace source identifiers with new ones."""
         patch_extensions = [
             ".rs",
             ".toml",
@@ -96,6 +104,7 @@ class ProjectCreator:
                         f.write(content)
 
     def post_actions(self):
+        """Perform post-creation actions: like generating translation template and initializing git."""
         print(" --> Generating translation template...")
         subprocess.run(
             shlex.split(
@@ -111,6 +120,7 @@ class ProjectCreator:
         )
 
     def create_project(self):
+        """Create the new project"""
         self.project_path.mkdir(parents=True, exist_ok=True)
         print(f"Creating project at: {self.project_path}")
         self.copy_directories()
