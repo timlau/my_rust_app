@@ -1,7 +1,7 @@
 APPNAME=$(shell grep -A1 "^project" meson.build | sed -n "2s/.*'\([^']*\)'.*/\1/p")
 VERSION=$(shell sed -n "s/.*version: '\([0-9.]*\)'.*/\1/p" meson.build)
 ARCHIVE_NAME = ${APPNAME}-${VERSION}.tar.xz
-ARCHIVE_FILES = src/ data/ po/ build-aux/ Cargo.toml meson.build meson_options.txt README.md LICENSE ${APPNAME}.spec
+ARCHIVE_FILES = src/ data/ po/ build-aux/ Cargo.toml meson.build meson_options.txt README.md LICENSE ${APPNAME}.spec Makefile
 
 NAME = $(shell git config --get user.name)
 EMAIL = $(shell git config --get user.email)
