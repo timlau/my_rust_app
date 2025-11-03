@@ -7,6 +7,6 @@ fi
 
 meson compile -C $BUILDDIR
 meson install -C $BUILDDIR -q
-
+[ $? -eq 0 ]  || exit 1
 echo "Running application"
 $BUILDDIR/bin/my_rust_app
