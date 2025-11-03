@@ -8,7 +8,7 @@ use gtk::prelude::{ApplicationExt, ApplicationWindowExt, GtkWindowExt, Orientabl
 
 use crate::config::PROFILE;
 use crate::modals::about::AboutDialog;
-use crate::modals::pref::PrefDialog;
+use crate::modals::pref::{PrefSettings, Preferences};
 
 pub(super) struct App {}
 
@@ -114,7 +114,11 @@ impl SimpleComponent for App {
 
         let pref_action = {
             RelmAction::<PreferencesAction>::new_stateless(move |_| {
-                PrefDialog::builder().launch(()).detach();
+                let settings = PrefSettings {
+                    dark_mode: true,
+                    verbose_logging: true,
+                };
+                Preferences::builder().launch(settings).detach();
             })
         };
 
