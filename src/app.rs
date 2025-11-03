@@ -8,6 +8,7 @@ use gtk::prelude::{ApplicationExt, ApplicationWindowExt, GtkWindowExt, Orientabl
 
 use crate::config::PROFILE;
 use crate::modals::about::AboutDialog;
+use crate::modals::pref::PrefDialog;
 
 pub(super) struct App {}
 
@@ -111,8 +112,15 @@ impl SimpleComponent for App {
             })
         };
 
+        let pref_action = {
+            RelmAction::<PreferencesAction>::new_stateless(move |_| {
+                PrefDialog::builder().launch(()).detach();
+            })
+        };
+
         actions.add_action(shortcuts_action);
         actions.add_action(about_action);
+        actions.add_action(pref_action);
         actions.register_for_widget(&widgets.main_window);
 
         widgets.load_window_size();
