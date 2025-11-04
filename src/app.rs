@@ -1,12 +1,13 @@
+use gtk::gio;
+use gtk::glib;
+use gtk::prelude::{ApplicationExt, ApplicationWindowExt, GtkWindowExt, OrientableExt, WidgetExt};
+
 use relm4::{
     actions::{RelmAction, RelmActionGroup},
     adw, gtk, main_application, Component, ComponentParts, ComponentSender, SimpleComponent,
 };
 
-use gtk::glib;
-use gtk::prelude::{ApplicationExt, ApplicationWindowExt, GtkWindowExt, OrientableExt, WidgetExt};
-
-use crate::config::PROFILE;
+use crate::config::{APP_ID, PROFILE};
 use crate::modals::about::AboutDialog;
 use crate::modals::pref::{PrefSettings, Preferences};
 
@@ -139,27 +140,46 @@ impl SimpleComponent for App {
     }
 
     fn shutdown(&mut self, widgets: &mut Self::Widgets, _output: relm4::Sender<Self::Output>) {
-        widgets.save_window_size().unwrap();
+        widgets.save_window_size();
     }
 }
 
 impl AppWidgets {
-    fn save_window_size(&self) -> Result<(), glib::BoolError> {
-        // let settings = gio::Settings::with_path(APP_ID, SETTINGS_FILE);
+    fn get_settings(&self) -> Option<gio::Settings> {
+        let source = gio::SettingsSchemaSource::default();
+        match source {
+            None => {
+                println!("No default schema source found");
+                return None;
+            }
+            Some(s) => {
+                if s.lookup(APP_ID, true).is_none() {
+                    println!("Schema {} not found", APP_ID);
+                    return None;
+                }
+            }
+        }
+        Some(gio::Settings::new(APP_ID))
+    }
+    fn save_window_size(&self) {
+        let settings = match self.get_settings() {
+            None => return,
+            Some(s) => s,
+        };
+        println!("{:?}", settings)
         // let (width, height) = self.main_window.default_size();
-
-        // settings.set_int("window-width", width)?;
-        // settings.set_int("window-height", height)?;
-
-        // settings.set_boolean("is-maximized", self.main_window.is_maximized())?;
-
-        Ok(())
+        // settings.set_int("windows", width);
+        // s.set_int("window-width", width)?;
+        // s.set_int("window-height", height)?;
+        // s.set_boolean("is-maximized", self.main_window.is_maximized())?;
     }
 
     fn load_window_size(&self) {
-        // let settings = gio::Settings::new(APP_ID);
-        // let settings = gio::Settings::with_path(APP_ID, SETTINGS_FILE);
-
+        let settings = match self.get_settings() {
+            None => return,
+            Some(s) => s,
+        };
+        println!("{:?}", settings)
         // let width = settings.int("window-width");
         // let height = settings.int("window-height");
         // let is_maximized = settings.boolean("is-maximized");

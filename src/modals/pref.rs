@@ -8,6 +8,7 @@ use relm4::{
 pub struct Preferences {
     dark_mode: bool,
     verbose_logging: bool,
+    // settings: PrefSettings,
 }
 
 pub struct PrefSettings {
@@ -66,6 +67,7 @@ impl SimpleComponent for Preferences {
         let model = Self {
             dark_mode: init.dark_mode,
             verbose_logging: init.verbose_logging,
+            // settings: init,
         };
         let widgets = root.clone();
         widgets.present(Some(&relm4::main_application().windows()[0]));
