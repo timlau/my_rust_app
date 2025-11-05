@@ -1,3 +1,4 @@
+# Create the config.rs file from config.rs.in template
 global_conf = configuration_data()
 global_conf.set_quoted('APP_NAME', meson.project_name())
 global_conf.set_quoted('APP_ID', application_id)
@@ -8,7 +9,7 @@ global_conf.set_quoted('PROFILE', profile)
 global_conf.set_quoted('VERSION', version + version_suffix)
 global_conf.set_quoted('GETTEXT_PACKAGE', gettext_package)
 global_conf.set_quoted('LOCALEDIR', localedir)
-config = configure_file(input: 'config.rs.in', output: 'config.rs', configuration: global_conf)
+configure_file(input: 'config.rs.in', output: 'config.rs', configuration: global_conf)
 # Copy the config.rs output to the source directory.
 run_command(
   'cp',
@@ -16,6 +17,8 @@ run_command(
   meson.project_source_root() / 'src' / 'config.rs',
   check: true,
 )
+
+# Build the Rust application using Cargo
 
 cargo_options = ['--manifest-path', meson.project_source_root() / 'Cargo.toml']
 cargo_options += ['--target-dir', meson.project_build_root() / 'src']
@@ -32,7 +35,7 @@ endif
 
 cargo_env = ['CARGO_HOME=' + meson.project_build_root() / 'cargo-home']
 
-cargo_build = custom_target(
+custom_target(
   'cargo-build',
   build_by_default: true,
   build_always_stale: true,
