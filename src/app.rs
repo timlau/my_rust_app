@@ -1,29 +1,18 @@
-use gtk::gio::{ Settings };
 use crate::config::APP_ID;
+use gtk::gio::Settings;
 use gtk::prelude::{
-    ApplicationExt,
-    ApplicationWindowExt,
-    GtkWindowExt,
-    OrientableExt,
-    WidgetExt,
-    SettingsExt,
+    ApplicationExt, ApplicationWindowExt, GtkWindowExt, OrientableExt, SettingsExt, WidgetExt,
 };
 
 use relm4::{
-    actions::{ RelmAction, RelmActionGroup },
-    adw,
-    gtk,
-    main_application,
-    Component,
-    ComponentParts,
-    ComponentSender,
-    SimpleComponent,
+    actions::{RelmAction, RelmActionGroup},
+    adw, gtk, main_application, Component, ComponentParts, ComponentSender, SimpleComponent,
 };
 
-use gtk::glib;
-use crate::config::{ PROFILE };
+use crate::config::PROFILE;
 use crate::modals::about::AboutDialog;
-use crate::modals::pref::{ PrefSettings, Preferences };
+use crate::modals::pref::{PrefSettings, Preferences};
+use gtk::glib;
 
 pub(super) struct App {}
 
@@ -107,7 +96,7 @@ impl SimpleComponent for App {
     fn init(
         _init: Self::Init,
         root: Self::Root,
-        sender: ComponentSender<Self>
+        sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
         let model = Self {};
 
@@ -164,8 +153,12 @@ impl AppWidgets {
         let settings: Settings = Settings::new(APP_ID);
         let (width, height) = self.main_window.default_size();
         println!("Saving window size: {}x{}", width, height);
-        settings.set_int("window-width", width).expect("Failed to save window width");
-        settings.set_int("window-height", height).expect("Failed to save window height");
+        settings
+            .set_int("window-width", width)
+            .expect("Failed to save window width");
+        settings
+            .set_int("window-height", height)
+            .expect("Failed to save window height");
         settings
             .set_boolean("is-maximized", self.main_window.is_maximized())
             .expect("Failed to save window maximized state");
