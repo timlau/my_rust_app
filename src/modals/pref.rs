@@ -1,9 +1,5 @@
-use adw::prelude::AdwDialogExt;
-use gtk::prelude::GtkApplicationExt;
-use relm4::{
-    adw::{self, prelude::PreferencesDialogExt},
-    gtk, ComponentParts, ComponentSender, RelmContainerExt, SimpleComponent,
-};
+use adw::prelude::*;
+use relm4::{adw, ComponentParts, ComponentSender, RelmContainerExt, SimpleComponent};
 
 pub struct Preferences {
     dark_mode: bool,

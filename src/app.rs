@@ -1,8 +1,6 @@
 use crate::config::APP_ID;
 use gtk::gio::Settings;
-use gtk::prelude::{
-    ApplicationExt, ApplicationWindowExt, GtkWindowExt, OrientableExt, SettingsExt, WidgetExt,
-};
+use gtk::prelude::*;
 
 use relm4::{
     actions::{RelmAction, RelmActionGroup},
