@@ -68,6 +68,12 @@ Run the local.sh script to build and run application locally.
 ./local.sh
 ```
 
+> When running locally you need to install the setting scheme, using
+```shell
+make install-settings 
+```
+
+
 ## Translations with Gettext
 
 The template uses `gettext` as a framework for translations using [`gettext-rs`](https://github.com/gettext-rs/gettext-rs). The basic files for this can be found in the `po` folder.

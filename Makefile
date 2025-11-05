@@ -49,6 +49,7 @@ flatpak-run:
 update-pot:
 	@echo "Updating .pot file.."
 	@xgettext --package-APPNAME=${APPNAME} --package-version=main --files-from=po/POTFILES.in --output=po/${APPNAME}.pot
+	
 
 PHONY: archive update-pot list
 

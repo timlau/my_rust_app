@@ -1,15 +1,29 @@
-use gtk::gio;
-use gtk::glib;
-use gtk::prelude::{ApplicationExt, ApplicationWindowExt, GtkWindowExt, OrientableExt, WidgetExt};
-
-use relm4::{
-    actions::{RelmAction, RelmActionGroup},
-    adw, gtk, main_application, Component, ComponentParts, ComponentSender, SimpleComponent,
+use gtk::gio::{ Settings };
+use crate::config::APP_ID;
+use gtk::prelude::{
+    ApplicationExt,
+    ApplicationWindowExt,
+    GtkWindowExt,
+    OrientableExt,
+    WidgetExt,
+    SettingsExt,
 };
 
-use crate::config::{APP_ID, PROFILE};
+use relm4::{
+    actions::{ RelmAction, RelmActionGroup },
+    adw,
+    gtk,
+    main_application,
+    Component,
+    ComponentParts,
+    ComponentSender,
+    SimpleComponent,
+};
+
+use gtk::glib;
+use crate::config::{ PROFILE };
 use crate::modals::about::AboutDialog;
-use crate::modals::pref::{PrefSettings, Preferences};
+use crate::modals::pref::{ PrefSettings, Preferences };
 
 pub(super) struct App {}
 
@@ -23,6 +37,7 @@ relm4::new_stateless_action!(PreferencesAction, WindowActionGroup, "preferences"
 relm4::new_stateless_action!(pub(super) ShortcutsAction, WindowActionGroup, "show-help-overlay");
 relm4::new_stateless_action!(AboutAction, WindowActionGroup, "about");
 
+#[allow(deprecated)]
 #[relm4::component(pub)]
 impl SimpleComponent for App {
     type Init = ();
@@ -55,8 +70,8 @@ impl SimpleComponent for App {
 
             #[wrap(Some)]
             set_help_overlay: shortcuts = &gtk::Builder::from_resource(
-                    "/org/mydomain/MyRustApp/gtk/help-overlay.ui"
-                )
+                "/org/mydomain/MyRustApp/gtk/help-overlay.ui"
+            )
                 .object::<gtk::ShortcutsWindow>("help_overlay")
                 .unwrap() -> gtk::ShortcutsWindow {
                     set_transient_for: Some(&main_window),
@@ -92,7 +107,7 @@ impl SimpleComponent for App {
     fn init(
         _init: Self::Init,
         root: Self::Root,
-        sender: ComponentSender<Self>,
+        sender: ComponentSender<Self>
     ) -> ComponentParts<Self> {
         let model = Self {};
 
@@ -145,49 +160,28 @@ impl SimpleComponent for App {
 }
 
 impl AppWidgets {
-    fn get_settings(&self) -> Option<gio::Settings> {
-        let source = gio::SettingsSchemaSource::default();
-        match source {
-            None => {
-                println!("No default schema source found");
-                return None;
-            }
-            Some(s) => {
-                if s.lookup(APP_ID, true).is_none() {
-                    println!("Schema {} not found", APP_ID);
-                    return None;
-                }
-            }
-        }
-        Some(gio::Settings::new(APP_ID))
-    }
     fn save_window_size(&self) {
-        let settings = match self.get_settings() {
-            None => return,
-            Some(s) => s,
-        };
-        println!("{:?}", settings)
-        // let (width, height) = self.main_window.default_size();
-        // settings.set_int("windows", width);
-        // s.set_int("window-width", width)?;
-        // s.set_int("window-height", height)?;
-        // s.set_boolean("is-maximized", self.main_window.is_maximized())?;
+        let settings: Settings = Settings::new(APP_ID);
+        let (width, height) = self.main_window.default_size();
+        println!("Saving window size: {}x{}", width, height);
+        settings.set_int("window-width", width).expect("Failed to save window width");
+        settings.set_int("window-height", height).expect("Failed to save window height");
+        settings
+            .set_boolean("is-maximized", self.main_window.is_maximized())
+            .expect("Failed to save window maximized state");
     }
 
     fn load_window_size(&self) {
-        let settings = match self.get_settings() {
-            None => return,
-            Some(s) => s,
-        };
-        println!("{:?}", settings)
-        // let width = settings.int("window-width");
-        // let height = settings.int("window-height");
-        // let is_maximized = settings.boolean("is-maximized");
+        let settings: Settings = Settings::new(APP_ID);
+        let width = settings.int("window-width");
+        let height = settings.int("window-height");
+        let is_maximized = settings.boolean("is-maximized");
 
-        // self.main_window.set_default_size(width, height);
+        println!("Loading window size: {}x{}", width, height);
+        self.main_window.set_default_size(width, height);
 
-        // if is_maximized {
-        //     self.main_window.maximize();
-        // }
+        if is_maximized {
+            self.main_window.maximize();
+        }
     }
 }
